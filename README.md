@@ -44,4 +44,6 @@ I went online and found several strategies. I'm going to implement and test them
 - [ ] Step 1 – Build puzzle generator
     > During the coding phase I realized that I didn't have words to put into the generator, I had grab a word.txt file on git for the project. 
 - [ ] Step 2  - Build Algorithm(methods) solver
-    > Brute Force
+    > Brute Force Complete [ ]
+    > Frequency_heuristic [ ]
+    > Diagonal_bias [ ]
