@@ -37,3 +37,7 @@ I went online and found several strategies. I'm going to implement and test them
 | **Pattern Match**    | Scan rows/columns for regex-like word shapes |
 | **Diagonal Bias**    | Focus only on diagonal matches (as a performance comparison) |
 | **My Method**        | Start from identified letters and expand a 3x3 grid outward [^3] |
+
+
+## Phase
+- [ ] Step 1 – build puzzle generator
