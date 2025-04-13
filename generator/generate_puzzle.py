@@ -96,7 +96,7 @@ def save_puzzle(puzzle, folder="puzzles"):
     with open(filename, "w") as f:
         json.dump(puzzle, f, indent=2)
 
-# Optional: show the puzzle in terminal
+# Print the grid in a readable format
 def print_grid(grid):
     for row in grid:
         print(" ".join(row))

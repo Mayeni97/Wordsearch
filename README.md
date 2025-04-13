@@ -16,6 +16,7 @@ While flying through the puzzles, I started to notice some patterns:
 4. Could an AI replicate or test these methods — and show which one is most efficient?
 
 ## Idea
+- Generate **n** x **n** grid
 - Generate **n** word search puzzles with **n** words each [^4]
 - Use different solving strategies to solve each puzzle
 - Track performance metrics like time and search steps
@@ -40,4 +41,7 @@ I went online and found several strategies. I'm going to implement and test them
 
 
 ## Phase
-- [ ] Step 1 – build puzzle generator
+- [ ] Step 1 – Build puzzle generator
+    > During the coding phase I realized that I didn't have words to put into the generator, I had grab a word.txt file on git for the project. 
+- [ ] Step 2  - Build Algorithm(methods) solver
+    > Brute Force
