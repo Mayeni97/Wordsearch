@@ -45,5 +45,14 @@ I went online and found several strategies. I'm going to implement and test them
     > During the coding phase I realized that I didn't have words to put into the generator, I had grab a word.txt file on git for the project. 
 - [ ] Step 2  - Build Algorithm(methods) solver
     > Brute Force Complete [ ]
-    > Frequency_heuristic [ ]
+
     > Diagonal_bias [ ]
+
+    > Frequency_heuristic [ ]
+
+    > Pattern_Match [ ]
+    
+    > Custom [ ]
+
+- [ ] Step 3 - Build result data report
+    > 
