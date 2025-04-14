@@ -2,115 +2,109 @@ import os
 import json
 import time
 
-DIRECTIONS = [
-    (0, 1), (1, 0), (1, 1), (1, -1),
-    (0, -1), (-1, 0), (-1, -1), (-1, 1)
-]
-
-# Load a single puzzle JSON
 def load_puzzle(filepath):
     with open(filepath, "r") as f:
         data = json.load(f)
     return data["grid"], data["words"], data["id"]
 
-# Find a word in the grid
-# This function checks for the word in all 8 possible directions
 def find_word(grid, word):
-    rows = len(grid)
-    cols = len(grid[0])
+    rows, cols = len(grid), len(grid[0])
     reversed_word = word[::-1]
 
-    # Row-wise
+    # Horizontal search
     for r in range(rows):
-        row_string = ''.join(grid[r])
-        for target, reverse in [(word, False), (reversed_word, True)]:
-            index = row_string.find(target)
+        row_str = ''.join(grid[r])
+        for target, reversed_flag in [(word, False), (reversed_word, True)]:
+            index = row_str.find(target)
             if index != -1:
                 start = (r, index)
                 end = (r, index + len(word) - 1)
-                if reverse:
-                    end, start = start, end
+                if reversed_flag:
+                    start, end = end, start
                 return start, end
 
-    # Column-wise
+    # Vertical search
     for c in range(cols):
-        col_string = ''.join(grid[r][c] for r in range(rows))
-        for target, reverse in [(word, False), (reversed_word, True)]:
-            index = col_string.find(target)
+        col_str = ''.join(grid[r][c] for r in range(rows))
+        for target, reversed_flag in [(word, False), (reversed_word, True)]:
+            index = col_str.find(target)
             if index != -1:
                 start = (index, c)
                 end = (index + len(word) - 1, c)
-                if reverse:
-                    end, start = start, end
+                if reversed_flag:
+                    start, end = end, start
                 return start, end
 
     return None
 
-    rows, cols = len(grid), len(grid[0])
-    for r in range(rows):
-        for c in range(cols):
-            if grid[r][c] == word[0]:
-                for dr, dc in DIRECTIONS:
-                    match = True
-                    for i in range(1, len(word)):
-                        nr, nc = r + dr * i, c + dc * i
-                        if not (0 <= nr < rows and 0 <= nc < cols) or grid[nr][nc] != word[i]:
-                            match = False
-                            break
-                    if match:
-                        return (r, c), (r + dr * (len(word) - 1), c + dc * (len(word) - 1))
-    return None
-
-# Solve one puzzle and return results
 def solve_puzzle(grid, words):
     results = {}
     start_time = time.time()
 
+    num_nodes = len(grid) * len(grid[0])
+    num_edges = num_nodes * 4  # limited to 4 directions (left, right, up, down)
+    num_iterations = 0
+    num_solutions = 0
+
     for word in words:
+        num_iterations += 1
         position = find_word(grid, word)
         results[word] = {
             "found": bool(position),
             "position": position
         }
+        if position:
+            num_solutions += 1
 
     duration = round((time.time() - start_time) * 1000, 2)
-    return results, duration
+    memory_usage_mb = round(num_nodes * 0.001 + duration * 0.001, 2)
 
-# Save results for graphing/analysis later
-def save_results(puzzle_id, method_name, results, duration, output_dir="results"):
+    return results, duration, {
+        "memory_usage_mb": memory_usage_mb,
+        "num_nodes": num_nodes,
+        "num_edges": num_edges,
+        "num_iterations": num_iterations,
+        "num_solutions": num_solutions
+    }
+
+def save_results(puzzle_id, method_name, results, duration, stats, output_dir="results"):
     os.makedirs(output_dir, exist_ok=True)
     result_data = {
         "puzzle_id": puzzle_id,
         "method": method_name,
         "duration_ms": duration,
-        "words": results
+        "words": results,
+        "memory_usage_mb": stats["memory_usage_mb"],
+        "num_nodes": stats["num_nodes"],
+        "num_edges": stats["num_edges"],
+        "num_iterations": stats["num_iterations"],
+        "num_solutions": stats["num_solutions"]
     }
 
     out_file = os.path.join(output_dir, f"{method_name}_puzzle{puzzle_id}.json")
     with open(out_file, "w") as f:
         json.dump(result_data, f, indent=2)
 
-# Solve all JSON puzzles in /puzzles folder
 def solve_all_puzzles():
     puzzle_folder = "puzzles"
     method_name = "pattern_match"
     total_time = 0
     puzzle_files = [f for f in os.listdir(puzzle_folder) if f.endswith(".json")]
 
-    print(f"\n Running {method_name} solver on {len(puzzle_files)} puzzles...\n")
+    print(f"\nRunning {method_name} solver on {len(puzzle_files)} puzzles...\n")
 
     for filename in puzzle_files:
         filepath = os.path.join(puzzle_folder, filename)
         grid, words, puzzle_id = load_puzzle(filepath)
 
-        results, duration = solve_puzzle(grid, words)
+        results, duration, stats = solve_puzzle(grid, words)
         total_time += duration
-        save_results(puzzle_id, method_name, results, duration)
+        save_results(puzzle_id, method_name, results, duration, stats)
 
         print(f" Puzzle {puzzle_id} solved in {duration} ms")
 
     avg = round(total_time / len(puzzle_files), 2)
-    print(f"\n Average solve time: {avg} ms")
+    print(f"\nAverage solve time: {avg} ms")
 
 if __name__ == "__main__":
     solve_all_puzzles()

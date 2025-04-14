@@ -22,13 +22,19 @@ def summarize_results(results_folder="results", output_file="results/summary.csv
         found_words = sum(1 for w in words.values() if w["found"])
         accuracy = round((found_words / total_words) * 100, 2) if total_words > 0 else 0
 
+        # NEW: Additional metrics with fallback defaults
         summary.append({
             "puzzle_id": puzzle_id,
             "method": method,
             "duration_ms": duration,
             "words_found": found_words,
             "total_words": total_words,
-            "accuracy_percent": accuracy
+            "accuracy_percent": accuracy,
+            "memory_usage_mb": data.get("memory_usage_mb", 0),
+            "num_nodes": data.get("num_nodes", 0),
+            "num_edges": data.get("num_edges", 0),
+            "num_iterations": data.get("num_iterations", 0),
+            "num_solutions": data.get("num_solutions", 0),
         })
 
     # Save to CSV
@@ -36,10 +42,6 @@ def summarize_results(results_folder="results", output_file="results/summary.csv
         writer = csv.DictWriter(f, fieldnames=summary[0].keys())
         writer.writeheader()
         writer.writerows(summary)
-    # Also save as JSON
-    with open("results/summary.json", "w") as f:
-        json.dump(summary, f, indent=2)
-
 
     print(f"Summary saved to: {output_file}")
 

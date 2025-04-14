@@ -23,7 +23,8 @@ def main():
 
     clear_folder("results", exclude=["summary.json", "summary.csv"])
     clear_folder("puzzles")
-    clear_folder("generator", exclude=["words_alpha.txt", "__init__.py"])
+    clear_folder("graphs")
+    clear_folder("generator", exclude=["Words.txt", "generate_puzzle.py"])
 
     print("Reset complete.")
 

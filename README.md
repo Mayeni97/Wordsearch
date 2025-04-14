@@ -41,18 +41,41 @@ I went online and found several strategies. I'm going to implement and test them
 
 
 ## Phase
-- [ ] Step 1 – Build puzzle generator
-    > During the coding phase I realized that I didn't have words to put into the generator, I had grab a word.txt file on git for the project. 
-- [ ] Step 2  - Build Algorithm(methods) solver
-    > Brute Force Complete [ ]
+### Step 1 – Build Puzzle Generator
+- [ ] Generate a grid of size **n** x **n**
+- [ ] Populate the grid with random letters
+- [ ] Insert words from a word list into the grid
+- [ ] Ensure words can be placed horizontally, vertically, and diagonally
+- [ ] Handle edge cases like overlapping words
+### Step 2 – Build Algorithm (Methods) Solver
+- [ ] Brute Force Complete
+- [ ] Diagonal_bias
+- [ ] Frequency_heuristic
+- [ ] Pattern_Match
+- [ ] Custom
+### Step 3 – Build Result Data Report
+- [ ] Track performance metrics for each solving method:
+  - Time taken to solve
+  - Number of search steps
+  - Accuracy
+- [ ] Generate a comparison graph to visualize results
+- [ ] Export results to a CSV file
 
-    > Diagonal_bias [ ]
+## Result
+After solving, you should get :
+-  **Bar charts**: duration, accuracy, and solution counts
+-  **Radar chart**: compares all metrics per method
+-  **Heatmap**: accuracy per puzzle across all methods
+-  **Line plot**: duration per puzzle ID, by method
 
-    > Frequency_heuristic [ ]
+    > Saved in '/graphs'
 
-    > Pattern_Match [ ]
-    
-    > Custom [ ]
+## Future 
+- Add a user interface for generating and solving puzzles
+- Allow users to input custom word lists
+- Implement additional solving strategies
+- Optimize algorithms for larger grids
 
-- [ ] Step 3 - Build result data report
-    > 
+### How to run
+1. Clone the repo
+2. python scripts/run.py 
